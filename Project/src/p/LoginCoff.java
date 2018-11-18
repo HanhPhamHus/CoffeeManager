@@ -88,7 +88,7 @@ public class LoginCoff extends JFrame {
 		passwordField.setBackground(new Color(255, 250, 205));
 		passwordField.setBounds(194, 95, 136, 22);
 		contentPane.add(passwordField);
-		
+// use combobox to admin and employee
 //		JComboBox comboBox = new JComboBox();
 //		comboBox.setForeground(new Color(255, 255, 255));
 //		comboBox.setBackground(new Color(65, 105, 225));
