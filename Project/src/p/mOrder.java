@@ -1,6 +1,7 @@
 package p;
 
 import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -12,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,16 +25,16 @@ import javax.swing.JButton;
 import java.awt.Choice;
 import javax.swing.ImageIcon;
 import java.awt.Toolkit;
+import da.ConnectionUtil;
 
-public class mOrder extends JFrame implements ActionListener
-{
+public class mOrder extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField txtSetO;
 	private JTextField txtQuant;
-	private Choice chTenDoUong;
+//	private Choice chTenDoUong;
 	private Choice chDoUong;
-	private Choice chTenBan;
+	//private Choice chTenBan;
 	private Choice chBan;
 
 	private Connection con;
@@ -42,25 +44,25 @@ public class mOrder extends JFrame implements ActionListener
 	private JButton btnExit;
 	private JLabel lblBackground;
 
-//	/**
-//	 * Launch the application.
-//	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					mOrder frame = new mOrder();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-//
-//	/**
-//	 * Create the frame.
-//	 */
+	// /**
+	// * Launch the application.
+	// */
+	// public static void main(String[] args) {
+	// EventQueue.invokeLater(new Runnable() {
+	// public void run() {
+	// try {
+	// mOrder frame = new mOrder();
+	// frame.setVisible(true);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// });
+	// }
+	//
+	// /**
+	// * Create the frame.
+	// */
 	public mOrder() {
 		setTitle("Order Manager ");
 		setIconImage(Toolkit.getDefaultToolkit()
@@ -103,7 +105,6 @@ public class mOrder extends JFrame implements ActionListener
 		contentPane.add(lblQuantity);
 
 		txtSetO = new JTextField();
-		txtSetO.setText("Ex: 23 la Ban 2,Luot goi 3");
 		txtSetO.setBounds(207, 107, 192, 22);
 		contentPane.add(txtSetO);
 		txtSetO.setColumns(10);
@@ -125,13 +126,13 @@ public class mOrder extends JFrame implements ActionListener
 		btnExit.setBounds(247, 323, 67, 25);
 		contentPane.add(btnExit);
 
-		chTenBan = new Choice();
-		chTenBan.setBounds(207, 160, 192, 22);
-		contentPane.add(chTenBan);
+		chBan= new Choice();
+		chBan.setBounds(207, 160, 192, 22);
+		contentPane.add(chBan);
 
-		chTenDoUong = new Choice();
-		chTenDoUong.setBounds(207, 212, 192, 22);
-		contentPane.add(chTenDoUong);
+		chDoUong = new Choice();
+		chDoUong.setBounds(207, 212, 192, 22);
+		contentPane.add(chDoUong);
 
 		lblBackground = new JLabel("New label");
 		lblBackground.setIcon(new ImageIcon(
@@ -142,26 +143,26 @@ public class mOrder extends JFrame implements ActionListener
 		btnSave.addActionListener(this);
 		btnExit.addActionListener(this);
 		setResizable(false);
-	setVisible(true);
+		setVisible(true);
 
 		try {
 			connect();
 			rs = stmt.executeQuery("SELECT * FROM TableItem");
 			rs.next();
 			while (!rs.isAfterLast()) {
-				// chBan.addItem(rs.getString(1));
-				((Choice) chTenBan).addItem(rs.getString(2));
+				 chBan.addItem(rs.getString(1));
+				//((Choice) chTenBan).addItem(rs.getString(2));
 				rs.next();
 			}
 		} catch (Exception e) {
 		}
 		try {
-			connect();
+
 			rs = stmt.executeQuery("SELECT * FROM Menu");
 			rs.next();
 			while (!rs.isAfterLast()) {
-				// chDoUong.addItem(rs.getString(1));
-				chTenDoUong.addItem(rs.getString(2));
+				chDoUong.addItem(rs.getString(1));
+				//((Choice)chTenDoUong).addItem(rs.getString(2));
 				rs.next();
 			}
 		} catch (Exception e) {
@@ -199,19 +200,32 @@ public class mOrder extends JFrame implements ActionListener
 	public void Save() {
 		try {
 			connect();
-			rs = stmt.executeQuery("SELECT * FROM Order_detail");
-			rs.moveToInsertRow();
-			rs.updateLong(1, Long.parseLong(txtSetO.getText()));
-			int n = (chTenBan).getSelectedIndex();
-			rs.updateString(2, chBan.getItem(n));
-			int m = chTenDoUong.getSelectedIndex();
-			rs.updateString(3, chDoUong.getItem(m));
-			rs.updateLong(4, Long.parseLong(txtQuant.getText()));
-			rs.insertRow();
+			
+
+
+			PreparedStatement stmt=con.prepareStatement("INSERT INTO Order_detail(GoiId,BanID,DoUongID,SoLuong) VALUE(?,?,?,?)");
+			
+			stmt.setString(1,String.valueOf(txtSetO.getText()));
+			
+			int n = (chBan).getSelectedIndex();
+			stmt.setString(2, chBan.getItem(n));
+
+			int m = chDoUong.getSelectedIndex();
+			stmt.setString(3, chDoUong.getItem(m));
+			
+			stmt.setString(4, String.valueOf(txtQuant.getText()));
+//			stmt.setString(1, "28");
+//			stmt.setString(2, "B1");
+//			stmt.setString(3, "CAF");
+//			stmt.setInt(4, 3);
+			stmt.executeUpdate();
 			txtSetO.setText("");
-			txtQuant.setText("");
+		txtQuant.setText("");
+		
+
 		} catch (Exception e) {
 			System.err.println("Error: " + e.toString());
 		}
 	}
+	
 }
