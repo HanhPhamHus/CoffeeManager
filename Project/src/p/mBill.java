@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import java.awt.Choice;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -168,7 +169,7 @@ public class mBill extends JFrame implements ActionListener {
 			rs = stmt.executeQuery(
 					"SELECT Order_detail.BanID, Menu.DonGia,Order_detail.SoLuong, Menu.DonGia*Order_detail.SoLuong,Menu.TenDoUong AS Tong FROM Menu INNER JOIN (TableItem INNER JOIN Order_detail ON TableItem.BanID = Order_detail.BanID) ON Menu.DoUongID = Order_detail.DoUongID");
 			rs.next();
-			taChinh.setText("Ten Do Uong\t\tDon Gia\t\tSo Luong\n\n");
+			taChinh.setText("Ten Do Uong\t\tDon Gia\t\t\tSo Luong\t\t\tThoi Gian \n\n");
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 			Date date = new Date();
 			while (!rs.isAfterLast()) {
@@ -193,20 +194,18 @@ public class mBill extends JFrame implements ActionListener {
 	}
 
 	public void DeAll() {
-		String s = choice.getItem(choice.getSelectedIndex());
+
 		try {
-			rs = stmt.executeQuery("SELECT BanID FROM Order_detail");
-			n = 1;
-			rs.absolute(n);
-			while (!rs.isAfterLast()) {
-				if (rs.getString(1).equals(s)) {
-					rs.deleteRow();
-					n--;
-				}
-				rs.absolute(++n);
-			}
-		} catch (SQLException se) {
-			System.err.println("Error: " + se.getMessage());
+			connect();
+			PreparedStatement stmt=con.prepareStatement("DELETE FROM order_detail WHERE BanID=?");
+			stmt.setString(1, choice.getSelectedItem());
+			stmt.executeUpdate();
+			taChinh.setText("");
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+		System.err.println("Err"+e.getMessage());
 		}
 	}
 }
