@@ -1,6 +1,7 @@
 package p;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import p.updateMenu;
 
 public class mMenuManager extends JFrame implements ActionListener {
 
@@ -29,17 +32,16 @@ public class mMenuManager extends JFrame implements ActionListener {
 	private JTextField txtIdDrinks;
 	private JTextField txtNameDrinks;
 	private JTextField txtPrice;
-	private JButton btnUpdate;
+	private JButton btnAddNew;
 	private JButton btnReset;
 	private JButton btnNext;
 	private JButton btnFirst;
 	private JButton btnPre;
-	private JButton btnRepair;
-	//private Component btnExit;
+	private JButton btnUpdate;
+	// private Component btnExit;
 	private Connection con;
 	private ResultSet rs;
 	private Statement stmt;
-	
 
 	public mMenuManager() {
 		setIconImage(Toolkit.getDefaultToolkit()
@@ -92,79 +94,82 @@ public class mMenuManager extends JFrame implements ActionListener {
 		contentPane.add(txtPrice);
 		txtPrice.setColumns(10);
 
-		btnUpdate = new JButton("Update");
-		btnUpdate.setForeground(new Color(139, 69, 19));
-		btnUpdate.setBackground(new Color(255, 255, 240));
-		btnUpdate.setBounds(12, 364, 88, 25);
-		contentPane.add(btnUpdate);
+		btnAddNew = new JButton("New");
+		btnAddNew.setForeground(new Color(139, 69, 19));
+		btnAddNew.setBackground(new Color(255, 255, 240));
+		btnAddNew.setBounds(12, 364, 68, 25);
+		contentPane.add(btnAddNew);
 
 		btnReset = new JButton("Reset");
 		btnReset.setBackground(new Color(255, 255, 240));
 		btnReset.setForeground(new Color(139, 69, 19));
-		btnReset.setBounds(112, 364, 73, 25);
+		btnReset.setBounds(96, 364, 68, 25);
 		contentPane.add(btnReset);
-		
-	
+
 		btnPre = new JButton("Pre");
 		btnPre.setBackground(new Color(255, 255, 240));
 		btnPre.setForeground(new Color(139, 69, 19));
-		btnPre.setBounds(204, 364, 73, 25);
+		btnPre.setBounds(176, 364, 68, 25);
 		contentPane.add(btnPre);
-		
+
 		btnFirst = new JButton("Fist");
 		btnFirst.setBackground(new Color(255, 255, 240));
 		btnFirst.setForeground(new Color(139, 69, 19));
-		btnFirst.setBounds(297, 364, 73, 25);
+		btnFirst.setBounds(269, 364, 68, 25);
 		contentPane.add(btnFirst);
-		
+
 		btnNext = new JButton("Next");
 		btnNext.setBackground(new Color(255, 255, 240));
 		btnNext.setForeground(new Color(139, 69, 19));
-		btnNext.setBounds(394, 364, 68, 25);
+		btnNext.setBounds(356, 364, 68, 25);
 		contentPane.add(btnNext);
-		
-		btnRepair = new JButton("Repair");
-		btnRepair.setBackground(new Color(255, 255, 240));
-		btnRepair.setForeground(new Color(139, 69, 19));
-		btnRepair.setBounds(487, 364, 73, 25);
-		contentPane.add(btnRepair);
-		
-				JLabel lblNewBackGround = new JLabel("new background");
-				lblNewBackGround.setIcon(new ImageIcon("C:\\Users\\phamthuhanh\\Documents\\tài liệu Hạnh\\OOP\\fd2ef87894e69f16e0967cd73aa1157e.jpg"));
-				lblNewBackGround.setBounds(0, 0, 565, 402);
-				contentPane.add(lblNewBackGround);
 
-		
-		
-		
-		
+		btnUpdate = new JButton("Update");
+		btnUpdate.setBackground(new Color(255, 255, 240));
+		btnUpdate.setForeground(new Color(139, 69, 19));
+		btnUpdate.setBounds(442, 364, 73, 25);
+		contentPane.add(btnUpdate);
 
-//		btnExit = new JButton("Exit");
-//		btnExit.setForeground(new Color(139, 69, 19));
-//		btnExit.setBackground(new Color(255, 255, 240));
-//		btnExit.setBounds(402, 364, 97, 25);
-//		contentPane.add(btnExit);
+		JLabel lblNewBackGround = new JLabel("new background");
+		lblNewBackGround.setIcon(new ImageIcon(
+				"C:\\Users\\phamthuhanh\\Documents\\tài liệu Hạnh\\OOP\\fd2ef87894e69f16e0967cd73aa1157e.jpg"));
+		lblNewBackGround.setBounds(0, 0, 565, 402);
+		contentPane.add(lblNewBackGround);
 
-		btnUpdate.addActionListener(this);
+		// btnExit = new JButton("Exit");
+		// btnExit.setForeground(new Color(139, 69, 19));
+		// btnExit.setBackground(new Color(255, 255, 240));
+		// btnExit.setBounds(402, 364, 97, 25);
+		// contentPane.add(btnExit);
+
+		btnAddNew.addActionListener(this);
 		btnReset.addActionListener(this);
 		btnNext.addActionListener(this);
 		btnFirst.addActionListener(this);
 		btnNext.addActionListener(this);
 		btnPre.addActionListener(this);
-		//btnExit.addActionListener(this);
+		btnUpdate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateMenu up=new updateMenu();
+				up.setVisible(true);
+				up.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			}
+		});
+
+		// btnExit.addActionListener(this);
 		setResizable(false);
 		setVisible(true);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnUpdate)
+		if (e.getSource() == btnAddNew)
 			Up();
 		if (e.getSource() == btnReset)
 			Reset();
-		if (e.getSource() == btnRepair)
-			Repair();
-//		if (e.getSource() == btnExit)
-//			setVisible(false);
+		// if (e.getSource() == btnExit)
+		// setVisible(false);
 		if (e.getSource() == btnFirst)
 			First();
 		if (e.getSource() == btnPre)
@@ -213,61 +218,39 @@ public class mMenuManager extends JFrame implements ActionListener {
 		txtNameDrinks.setText("");
 		txtPrice.setText("");
 	}
-//sua ten do uong va don gia
-	public void Repair() {
+
+
+	public void Next() {
 		try {
-			connect();
-			rs.absolute(rs.getRow() + 1);
-			rs.moveToInsertRow();
-			rs.updateString(2, txtNameDrinks.getText());
-			rs.updateLong(3, Long.parseLong(txtPrice.getText()));
-			rs.updateRow();
-			txtIdDrinks.setText("");
-			txtNameDrinks.setText("");
-			txtPrice.setText("");
-		} catch (Exception e) {
-			System.err.println("Error: " + e.toString());
-		}
-	}
-	public void Next() 
-	{
-		try
-		{
 			rs.next();
 			txtIdDrinks.setText(rs.getString(1));
 			txtNameDrinks.setText(rs.getString(2));
 			txtPrice.setText(Long.toString(rs.getLong(3)));
-		}
-		catch(Exception e)
-		{
-			System.err.println("Error: "+e.getMessage());
+		} catch (Exception e) {
+			System.err.println("Error: " + e.getMessage());
 		}
 	}
-	public void First() 
-	{
-		try{
+
+	public void First() {
+		try {
 			connect();
 			rs.first();
 			txtIdDrinks.setText(rs.getString(1));
 			txtNameDrinks.setText(rs.getString(2));
 			txtPrice.setText(Long.toString(rs.getLong(3)));
-		}
-		catch(Exception e)
-		{
-			System.err.println("Error: "+e.toString());
+		} catch (Exception e) {
+			System.err.println("Error: " + e.toString());
 		}
 	}
-	public void Pre() 
-	{
-		try{
+
+	public void Pre() {
+		try {
 			rs.previous();
 			txtIdDrinks.setText(rs.getString(1));
 			txtNameDrinks.setText(rs.getString(2));
 			txtPrice.setText(Long.toString(rs.getLong(3)));
-		}
-		catch(Exception e)
-		{
-			System.err.println("Error: "+e.getMessage());
+		} catch (Exception e) {
+			System.err.println("Error: " + e.getMessage());
 		}
 	}
 }
