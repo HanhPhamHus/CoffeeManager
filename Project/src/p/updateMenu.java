@@ -162,7 +162,7 @@ public class updateMenu extends JFrame implements ActionListener {
 		try {
 			connect();
 
-			PreparedStatement stmt = con.prepareStatement("UPPDATE Menu SET DonGia=? WHERE DoUongID=?");
+			PreparedStatement stmt = con.prepareStatement("UPDATE Menu SET DonGia=? WHERE DoUongID=?");
 			int n = (chIdDr).getSelectedIndex();
 
 			stmt.setString(1, String.valueOf(txtPrice.getText()));
