@@ -37,25 +37,25 @@ public class updateMenu extends JFrame implements ActionListener {
 	private Statement stmt;
 	private ResultSet rs;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					updateMenu frame = new updateMenu();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+// 	/**
+// 	 * Launch the application.
+// 	 */
+// 	public static void main(String[] args) {
+// 		EventQueue.invokeLater(new Runnable() {
+// 			public void run() {
+// 				try {
+// 					updateMenu frame = new updateMenu();
+// 					frame.setVisible(true);
+// 				} catch (Exception e) {
+// 					e.printStackTrace();
+// 				}
+// 			}
+// 		});
+// 	}
 
-	/**
-	 * Create the frame.
-	 */
+// 	/**
+// 	 * Create the frame.
+// 	 */
 	public updateMenu() {
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage("C:\\Users\\phamthuhanh\\Documents\\tài liệu Hạnh\\OOP\\images.jpg"));
